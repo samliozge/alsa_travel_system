@@ -1,0 +1,123 @@
+<html>
+	
+
+	<head>
+	<script src = 'https://code.jquery.com/jquery-3.1.1.min.js'>
+	
+	</script> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<style>
+	b
+	{
+		font-size:30px;
+		
+
+	}
+	#koltukkutu{
+		border:1px solid;
+		width:10%;
+	}
+	#koltukbaslik{
+		font-size:20px
+	}
+	</style>
+	</head>
+	<body>
+
+<div class="jumbotron text-center">
+  <h1>ALSA TRAVEL</h1>
+  <p>Making traveller simplier!</p> 
+</div>
+<div class= "container">
+
+	<p> Reservation Control </p> 
+	<input id="resNo" type="text" class="form-control">
+			<button  onclick="resCheck() " class="btn btn-primary">Check Reservation</button>
+			<br> </br>
+
+	<p>Departures</p>
+	<select class="form-control" id='routes'>
+	{% for route in routes %}
+	<option id = "{{route[3]}}"> {{route[0] + '-' + route[1] }} </option>
+	{% endfor %}
+		</select>
+
+			
+		<ul class="list-group" id = 'travel_list' >
+			
+		</ul>
+
+		<section id = 'seats'>
+			
+		</section>
+
+
+		<button  onclick="navigate() " class="btn btn-primary">Make reservations</button>
+
+		<br></br>
+
+	<script>
+
+	var route;
+	var travel;
+	var seat;
+
+	function resCheck(){
+		var res =$('#resNo').val();
+		window.location.href= '/resCheck?resNo=' + res;
+	}
+
+	function navigate(){
+		window.location.href = '/makeReservation?travel_id=' + travel + '&route_id=' + route + '&seat_no=' + seat; 
+	}
+
+	function setSeats(seat_no){
+		seat = seat_no;
+		$('b').css('color','black');
+
+		$('#b' + seat_no).css('color','red');
+		alert(travel + " " + route + " " + seat);
+	}
+	
+	function loadSeats(id){
+	 $('#seats').append('<br> </br>');
+	 travel = id;
+	 $.getJSON( "loadSeats?travel_id=" + id, function( data ) {
+	 $('#seats').empty();
+	 $('#seats').append('<h6 id = "koltukbaslik"> Seats </h6>');
+	 $.each( data, function( key, val ) {
+  	 $('#seats').append(
+		   '<div id="koltukkutu"><b  id = "b' 
+	   + val.seat_no + '" ' + 
+	    'onclick="setSeats(' + val.seat_no + ') ">' + val.seat_no + ' </b></div>');
+
+
+  });
+  });
+	}
+	
+	$("#routes").change(function() {
+
+	$('#seats').empty();	
+	  
+    $( "#routes option:selected" ).each(function() {
+    var index = $(this).attr("id");
+	route = index;
+    	$('#travel_list').empty();
+    $.getJSON( "loadTravels?route_id=" + index , function( data ) {
+			
+  	 $.each( data, function( key, val ) {
+  	$('#travel_list').append("<input class='form-control' " + "onclick='loadSeats(" + val.travel_id   +")'type='checkbox'>"+val.travel_date+"</br>");
+  });
+});
+    });
+    });   
+	</script>
+	</div>
+	
+	</body>
+	</html>
+
+

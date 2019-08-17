@@ -1,0 +1,41 @@
+<html>
+	
+
+	<head>
+	<script src = 'https://code.jquery.com/jquery-3.1.1.min.js'>
+	
+	</script> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<style>
+	b{
+		font-size:50px
+	
+	}
+	#koltukbaslik{
+		font-size:25px
+	}
+	</style>
+	</head>
+	<body>
+
+<div class="jumbotron text-center">
+  <h1>ALSA TRAVEL</h1>
+  <p>Making traveller simplier!</p> 
+</div>
+<div class="container">
+    <p>Route          :{{route}}</p>
+    <p>Travel         :{{travel}}</p>
+    <p>Seat Number    :{{seat}} </p>
+    <p>Name           :{{name.decode("utf-8")}}</p>
+    <p>Surname        :{{surname.decode("utf-8")}}</p>
+    <button  onclick="deleteRes() " class="btn btn-danger">DELETE RESERVATION</button>
+</div> 
+    <script>
+    function deleteRes(){
+        window.location.href="deleteReservation?resNo=" + {{id}}
+    }
+    </script>
+	</body>
+</html>
